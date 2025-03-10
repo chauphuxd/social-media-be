@@ -1,6 +1,8 @@
 import { error } from 'console';
 import { Request, Response } from 'express';
+import { ParamsDictionary } from 'express-serve-static-core'
 import User from '~/models/schemas/User.shema';
+import { RegisterReqBody } from '~/models/User.requests';
 import databaseService from '~/services/database.services';
 import usersService from '~/services/users.services';
 
@@ -16,10 +18,10 @@ export const loginController = (req: Request, res: Response): any => {
 };
 
 
-export const registerController = async (req: Request, res: Response): Promise<any> => {
-    const { email, password } = req.body;
+export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response): Promise<any> => {
+
     try {
-        const result = await usersService.register({ email, password });
+        const result = await usersService.register(req.body);
         return res.json({
             message: 'Register success',
             result
